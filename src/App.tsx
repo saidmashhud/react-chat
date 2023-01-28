@@ -1,26 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useAuthState } from 'react-firebase-hooks/auth'
+import { Toaster } from 'react-hot-toast'
+
+import { auth } from 'app/firebase'
+import NavBar from 'components/NavBar'
+import ChatBox from 'components/ChatBox'
+import Welcome from 'components/Welcome'
+
+import './App.css'
 
 function App() {
+  const [user] = useAuthState(auth)
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <>
+      <div className='App'>
+        <NavBar />
+        {!user ? (
+          <Welcome />
+        ) : (
+          <>
+            <ChatBox />
+          </>
+        )}
+      </div>
+      <Toaster />
+    </>
+  )
 }
 
-export default App;
+export default App
